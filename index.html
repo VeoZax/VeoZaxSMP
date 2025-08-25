@@ -7,173 +7,499 @@
   <style>
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: #0b0f1a;
+      background: radial-gradient(ellipse at center, #0b0f1a 0%, #050810 100%);
       color: #fff;
       display: flex;
       justify-content: center;
       align-items: center;
-      height: 100vh;
+      min-height: 100vh;
       margin: 0;
       padding: 20px;
-      overflow: hidden;
+      overflow-x: hidden;
     }
 
-    /* Particle Background */
+    /* Enhanced Particle Background */
     .particles {
-      position: absolute;
+      position: fixed;
       top: 0; left: 0; right: 0; bottom: 0;
       overflow: hidden;
       z-index: -1;
+      pointer-events: none;
     }
 
     .particle {
       position: absolute;
-      width: 5px;
-      height: 5px;
-      background: #00f0ff;
       border-radius: 50%;
       opacity: 0.7;
       animation: floatUp linear infinite;
     }
 
-    @keyframes floatUp {
-      0% { transform: translateY(100vh) scale(0.3); opacity: 0.2; }
-      50% { opacity: 0.9; }
-      100% { transform: translateY(-10vh) scale(1); opacity: 0; }
+    .particle:nth-child(odd) {
+      width: 4px;
+      height: 4px;
+      background: linear-gradient(45deg, #00f0ff, #00ff85);
+      box-shadow: 0 0 6px #00f0ff;
     }
 
-    /* Card */
+    .particle:nth-child(even) {
+      width: 6px;
+      height: 6px;
+      background: linear-gradient(45deg, #ff0080, #ff4040);
+      box-shadow: 0 0 8px #ff0080;
+    }
+
+    .particle:nth-child(3n) {
+      width: 3px;
+      height: 3px;
+      background: linear-gradient(45deg, #8000ff, #4080ff);
+      box-shadow: 0 0 4px #8000ff;
+    }
+
+    @keyframes floatUp {
+      0% { 
+        transform: translateY(100vh) scale(0.2) rotate(0deg); 
+        opacity: 0.1; 
+      }
+      25% { 
+        opacity: 0.8; 
+        transform: translateY(75vh) scale(0.6) rotate(90deg);
+      }
+      50% { 
+        opacity: 1; 
+        transform: translateY(50vh) scale(0.9) rotate(180deg);
+      }
+      75% { 
+        opacity: 0.7; 
+        transform: translateY(25vh) scale(1.1) rotate(270deg);
+      }
+      100% { 
+        transform: translateY(-10vh) scale(0.3) rotate(360deg); 
+        opacity: 0; 
+      }
+    }
+
+    /* Card with enhanced styling */
     .card {
-      background: rgba(15, 15, 25, 0.9);
-      padding: 30px;
-      border-radius: 20px;
+      background: rgba(15, 15, 25, 0.95);
+      backdrop-filter: blur(20px);
+      padding: 40px;
+      border-radius: 25px;
       text-align: center;
       width: 100%;
-      max-width: 450px; /* normal size */
-      box-shadow: 0 0 25px rgba(0, 255, 255, 0.25);
-      border: 1px solid rgba(0,255,255,0.3);
+      max-width: 480px;
+      box-shadow: 
+        0 0 30px rgba(0, 255, 255, 0.3),
+        0 0 60px rgba(0, 255, 255, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      border: 2px solid #00f0ff;
+      position: relative;
+      animation: cardPulse 4s ease-in-out infinite;
+    }
+
+    @keyframes cardPulse {
+      0%, 100% { 
+        box-shadow: 
+          0 0 30px rgba(0, 255, 255, 0.3),
+          0 0 60px rgba(0, 255, 255, 0.1);
+        border-color: #00f0ff;
+      }
+      50% { 
+        box-shadow: 
+          0 0 40px rgba(0, 255, 255, 0.5),
+          0 0 80px rgba(0, 255, 255, 0.2);
+        border-color: #00c8ff;
+      }
     }
 
     h2 {
-      font-size: 1.8rem;
-      margin-bottom: 18px;
-      letter-spacing: 2px;
+      font-size: 2.2rem;
+      margin-bottom: 25px;
+      letter-spacing: 3px;
       text-transform: uppercase;
-      background: linear-gradient(90deg, #00f0ff, #00ff85);
+      background: linear-gradient(90deg, #00f0ff, #00ff85, #8000ff);
+      background-size: 200% 200%;
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
-      animation: glowText 3s ease-in-out infinite;
+      animation: gradientShift 3s ease-in-out infinite, textFloat 2s ease-in-out infinite;
+      text-shadow: 0 0 20px rgba(0, 240, 255, 0.5);
     }
 
-    @keyframes glowText {
-      0%, 100% { text-shadow: 0 0 10px #00f0ff, 0 0 20px #00ff85; }
-      50% { text-shadow: 0 0 20px #00ffea, 0 0 40px #00f0ff; }
+    @keyframes gradientShift {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
     }
 
+    @keyframes textFloat {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-5px); }
+    }
+
+    /* Enhanced info boxes with copy functionality */
     .info {
-      font-size: 1rem;
-      margin: 8px 0;
-      padding: 10px;
-      border-radius: 12px;
+      font-size: 1.1rem;
+      margin: 12px 0;
+      padding: 15px 20px;
+      border-radius: 15px;
       background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(0,255,255,0.2);
-      transition: all 0.3s;
+      border: 1px solid rgba(0,255,255,0.3);
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      cursor: pointer;
+      overflow: hidden;
+    }
+
+    .info::before {
+      content: '';
+      position: absolute;
+      top: 0; left: -100%;
+      width: 100%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(0, 255, 200, 0.2), transparent);
+      transition: left 0.6s;
+    }
+
+    .info:hover::before {
+      left: 100%;
     }
 
     .info:hover {
-      background: rgba(0, 255, 200, 0.08);
-      border-color: rgba(0, 255, 200, 0.6);
-      box-shadow: 0 0 15px rgba(0, 255, 200, 0.3);
+      background: rgba(0, 255, 200, 0.1);
+      border-color: rgba(0, 255, 200, 0.8);
+      box-shadow: 0 0 20px rgba(0, 255, 200, 0.4);
+      transform: translateY(-2px) scale(1.02);
     }
 
+    .info.copyable {
+      padding-right: 60px;
+    }
+
+    .copy-btn {
+      position: absolute;
+      right: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(0, 255, 200, 0.2);
+      border: 1px solid rgba(0, 255, 200, 0.5);
+      border-radius: 8px;
+      padding: 8px;
+      cursor: pointer;
+      transition: all 0.3s;
+      color: #00f0ff;
+    }
+
+    .copy-btn:hover {
+      background: rgba(0, 255, 200, 0.4);
+      transform: translateY(-50%) scale(1.1);
+      box-shadow: 0 0 10px rgba(0, 255, 200, 0.6);
+    }
+
+    .copy-btn.copied {
+      background: rgba(0, 255, 0, 0.4);
+      border-color: rgba(0, 255, 0, 0.8);
+      color: #00ff00;
+      animation: copySuccess 0.6s ease-out;
+    }
+
+    @keyframes copySuccess {
+      0% { transform: translateY(-50%) scale(1); }
+      50% { transform: translateY(-50%) scale(1.3); }
+      100% { transform: translateY(-50%) scale(1); }
+    }
+
+    /* Enhanced social buttons */
     .social-buttons {
-      margin-top: 18px;
+      margin-top: 25px;
       display: flex;
       justify-content: center;
-      gap: 12px;
+      gap: 15px;
       flex-wrap: wrap;
     }
 
     .btn {
-      padding: 10px 16px;
-      border-radius: 10px;
-      font-size: 0.95rem;
+      padding: 12px 20px;
+      border-radius: 12px;
+      font-size: 1rem;
       font-weight: bold;
       cursor: pointer;
       color: white;
       text-decoration: none;
-      transition: transform 0.2s, box-shadow 0.3s;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      overflow: hidden;
+      border: 2px solid transparent;
+    }
+
+    .btn::before {
+      content: '';
+      position: absolute;
+      top: 50%; left: 50%;
+      width: 0; height: 0;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 50%;
+      transition: all 0.4s;
+      transform: translate(-50%, -50%);
+    }
+
+    .btn:hover::before {
+      width: 200%; height: 200%;
     }
 
     .btn:hover {
-      transform: scale(1.06);
-      box-shadow: 0 0 12px rgba(255, 255, 255, 0.5);
+      transform: translateY(-3px) scale(1.05);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
     }
 
-    .discord { background: #5865F2; }
-    .youtube { background: #FF0000; }
+    .discord { 
+      background: linear-gradient(135deg, #5865F2, #4752C4);
+      box-shadow: 0 4px 15px rgba(88, 101, 242, 0.3);
+    }
+    
+    .youtube { 
+      background: linear-gradient(135deg, #FF0000, #CC0000);
+      box-shadow: 0 4px 15px rgba(255, 0, 0, 0.3);
+    }
 
+    .discord:hover { box-shadow: 0 8px 25px rgba(88, 101, 242, 0.6); }
+    .youtube:hover { box-shadow: 0 8px 25px rgba(255, 0, 0, 0.6); }
+
+    /* Enhanced downloads section */
     .downloads {
-      margin-top: 25px;
+      margin-top: 30px;
       text-align: center;
     }
 
     .downloads h3 {
-      margin-bottom: 12px;
-      font-size: 1.25rem;
-      color: #00f0ff;
+      margin-bottom: 20px;
+      font-size: 1.4rem;
+      background: linear-gradient(90deg, #00f0ff, #8000ff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: gradientShift 2s ease-in-out infinite;
     }
 
     .download-btn {
       display: block;
-      margin: 8px auto;
-      padding: 10px 18px;
-      border-radius: 10px;
-      background: linear-gradient(135deg, #00c6ff, #0072ff);
+      margin: 12px auto;
+      padding: 14px 24px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #00c6ff, #0072ff, #0040ff);
+      background-size: 200% 200%;
       color: white;
       text-decoration: none;
-      font-size: 1rem;
+      font-size: 1.05rem;
       font-weight: bold;
-      max-width: 240px;
-      transition: transform 0.2s, box-shadow 0.3s;
-      box-shadow: 0 0 10px rgba(0, 200, 255, 0.5);
+      max-width: 280px;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 6px 20px rgba(0, 200, 255, 0.4);
+      border: 1px solid rgba(0, 200, 255, 0.5);
+      position: relative;
+      overflow: hidden;
+      animation: downloadPulse 3s ease-in-out infinite;
+    }
+
+    @keyframes downloadPulse {
+      0%, 100% { 
+        background-position: 0% 50%;
+        box-shadow: 0 6px 20px rgba(0, 200, 255, 0.4);
+      }
+      50% { 
+        background-position: 100% 50%;
+        box-shadow: 0 8px 30px rgba(0, 200, 255, 0.6);
+      }
+    }
+
+    .download-btn::before {
+      content: '';
+      position: absolute;
+      top: -50%; left: -50%;
+      width: 200%; height: 200%;
+      background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+      transform: scale(0);
+      transition: transform 0.6s;
+    }
+
+    .download-btn:hover::before {
+      transform: scale(1);
     }
 
     .download-btn:hover {
-      transform: scale(1.05);
-      box-shadow: 0 0 18px rgba(0, 200, 255, 0.8);
+      transform: translateY(-4px) scale(1.05);
+      box-shadow: 0 12px 35px rgba(0, 200, 255, 0.8);
+      background-position: 100% 50%;
+    }
+
+    /* Copy notification */
+    .copy-notification {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: linear-gradient(135deg, #00ff00, #00cc00);
+      color: white;
+      padding: 12px 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 20px rgba(0, 255, 0, 0.4);
+      transform: translateX(100%);
+      transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      z-index: 1000;
+      font-weight: bold;
+    }
+
+    .copy-notification.show {
+      transform: translateX(0);
+    }
+
+    /* Responsive design */
+    @media (max-width: 480px) {
+      .card { 
+        padding: 25px; 
+        margin: 10px;
+      }
+      h2 { font-size: 1.8rem; }
+      .info { font-size: 1rem; padding: 12px 15px; }
+      .social-buttons { flex-direction: column; align-items: center; }
+      .btn { min-width: 200px; }
     }
   </style>
 </head>
 <body>
-  <!-- Floating particles -->
+  <!-- Enhanced floating particles -->
   <div class="particles">
-    <div class="particle" style="left:10%; animation-duration: 12s;"></div>
-    <div class="particle" style="left:25%; animation-duration: 18s;"></div>
-    <div class="particle" style="left:50%; animation-duration: 15s;"></div>
-    <div class="particle" style="left:75%; animation-duration: 20s;"></div>
-    <div class="particle" style="left:90%; animation-duration: 17s;"></div>
-    <div class="particle" style="left:40%; animation-duration: 22s;"></div>
+    <div class="particle" style="left:5%; animation-duration: 15s; animation-delay: 0s;"></div>
+    <div class="particle" style="left:15%; animation-duration: 12s; animation-delay: 2s;"></div>
+    <div class="particle" style="left:25%; animation-duration: 18s; animation-delay: 1s;"></div>
+    <div class="particle" style="left:35%; animation-duration: 20s; animation-delay: 3s;"></div>
+    <div class="particle" style="left:45%; animation-duration: 16s; animation-delay: 0.5s;"></div>
+    <div class="particle" style="left:55%; animation-duration: 22s; animation-delay: 2.5s;"></div>
+    <div class="particle" style="left:65%; animation-duration: 14s; animation-delay: 1.5s;"></div>
+    <div class="particle" style="left:75%; animation-duration: 19s; animation-delay: 4s;"></div>
+    <div class="particle" style="left:85%; animation-duration: 17s; animation-delay: 0.8s;"></div>
+    <div class="particle" style="left:95%; animation-duration: 21s; animation-delay: 3.2s;"></div>
   </div>
 
   <div class="card">
     <h2>🌌 VeoZax SMP 🌌</h2>
 
-    <div class="info">Name: VeoZax SMP</div>
-    <div class="info">IP: veozax.minecraft.pe</div>
-    <div class="info">Port: 22002</div>
-    <div class="info">Versions: 0.14.x - 0.15.10</div>
+    <div class="info">
+      <strong>Name:</strong> VeoZax SMP
+    </div>
+    
+    <div class="info copyable" onclick="copyToClipboard('veozax.minecraft.pe', this)">
+      <strong>IP:</strong> veozax.minecraft.pe
+      <div class="copy-btn">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M16 1H4C2.9 1 2 1.9 2 3V17H4V3H16V1ZM19 5H8C6.9 5 6 5.9 6 7V21C6 22.1 6.9 23 8 23H19C20.1 23 21 22.1 21 21V7C21 5.9 20.1 5 19 5ZM19 21H8V7H19V21Z"/>
+        </svg>
+      </div>
+    </div>
+    
+    <div class="info copyable" onclick="copyToClipboard('22002', this)">
+      <strong>Port:</strong> 22002
+      <div class="copy-btn">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M16 1H4C2.9 1 2 1.9 2 3V17H4V3H16V1ZM19 5H8C6.9 5 6 5.9 6 7V21C6 22.1 6.9 23 8 23H19C20.1 23 21 22.1 21 21V7C21 5.9 20.1 5 19 5ZM19 21H8V7H19V21Z"/>
+        </svg>
+      </div>
+    </div>
+    
+    <div class="info">
+      <strong>Versions:</strong> 0.14.x - 0.15.10
+    </div>
 
     <div class="social-buttons">
-      <a href="https://discord.gg/dCzgPYam2J" class="btn discord" target="_blank">💬 Discord</a>
-      <a href="https://www.youtube.com/channel/UC33-nbRHQn-3H56aQc0sanA" class="btn youtube" target="_blank">▶ YouTube</a>
+      <a href="https://discord.gg/dCzgPYam2J" class="btn discord" target="_blank">
+        💬 Join Discord
+      </a>
+      <a href="https://www.youtube.com/channel/UC33-nbRHQn-3H56aQc0sanA" class="btn youtube" target="_blank">
+        ▶ Watch YouTube
+      </a>
     </div>
 
     <div class="downloads">
       <h3>⬇ Game Downloads</h3>
-      <a href="https://www.mediafire.com/file/uqtimryyo76bihp/VeoZax_MC_Client.apk/file" class="download-btn" target="_blank">0.14.3 Version Download</a>
-      <a href="https://www.mediafire.com/file/2vm0faefex4137e/Textured_Craftsman_By_VeoZax.apk/file" class="download-btn" target="_blank">0.15.10 Version Download</a>
+      <a href="https://www.mediafire.com/file/uqtimryyo76bihp/VeoZax_MC_Client.apk/file" class="download-btn" target="_blank">
+        📱 Download 0.14.3 Version
+      </a>
+      <a href="https://www.mediafire.com/file/2vm0faefex4137e/Textured_Craftsman_By_VeoZax.apk/file" class="download-btn" target="_blank">
+        📱 Download 0.15.10 Version
+      </a>
     </div>
   </div>
+
+  <!-- Copy notification -->
+  <div class="copy-notification" id="copyNotification">
+    ✅ Copied to clipboard!
+  </div>
+
+  <script>
+    // Copy to clipboard functionality
+    function copyToClipboard(text, element) {
+      navigator.clipboard.writeText(text).then(() => {
+        // Show success animation on copy button
+        const copyBtn = element.querySelector('.copy-btn');
+        copyBtn.classList.add('copied');
+        
+        // Update icon to checkmark
+        copyBtn.innerHTML = `
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M9 16.17L4.83 12L3.41 13.41L9 19L21 7L19.59 5.59L9 16.17Z"/>
+          </svg>
+        `;
+        
+        // Show notification
+        const notification = document.getElementById('copyNotification');
+        notification.textContent = `✅ ${text} copied to clipboard!`;
+        notification.classList.add('show');
+        
+        // Reset after 2 seconds
+        setTimeout(() => {
+          copyBtn.classList.remove('copied');
+          copyBtn.innerHTML = `
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M16 1H4C2.9 1 2 1.9 2 3V17H4V3H16V1ZM19 5H8C6.9 5 6 5.9 6 7V21C6 22.1 6.9 23 8 23H19C20.1 23 21 22.1 21 21V7C21 5.9 20.1 5 19 5ZM19 21H8V7H19V21Z"/>
+            </svg>
+          `;
+          notification.classList.remove('show');
+        }, 2000);
+      }).catch(err => {
+        console.error('Failed to copy text: ', err);
+        // Fallback for older browsers
+        const textArea = document.createElement('textarea');
+        textArea.value = text;
+        document.body.appendChild(textArea);
+        textArea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textArea);
+        
+        // Still show the success animation
+        const notification = document.getElementById('copyNotification');
+        notification.textContent = `✅ ${text} copied to clipboard!`;
+        notification.classList.add('show');
+        
+        setTimeout(() => {
+          notification.classList.remove('show');
+        }, 2000);
+      });
+    }
+
+    // Add more dynamic particle generation
+    function createParticle() {
+      const particle = document.createElement('div');
+      particle.className = 'particle';
+      particle.style.left = Math.random() * 100 + '%';
+      particle.style.animationDuration = (Math.random() * 10 + 10) + 's';
+      particle.style.animationDelay = Math.random() * 5 + 's';
+      
+      document.querySelector('.particles').appendChild(particle);
+      
+      // Remove particle after animation
+      setTimeout(() => {
+        if (particle.parentNode) {
+          particle.parentNode.removeChild(particle);
+        }
+      }, 25000);
+    }
+
+    // Generate new particles periodically
+    setInterval(createParticle, 3000);
+  </script>
 </body>
 </html>
